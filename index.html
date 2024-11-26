@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Grid</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&display=swap');
+
+        :root[data-theme="dark"] {
+            --primary: #ffffff;
+            --secondary: #808080;
+            --background: #000000;
+            --card-bg: rgba(23, 23, 23, 0.8);
+            --accent: #ffffff;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --border-radius: 0px;
+            --box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --background-rgb: 0, 0, 0;
+            --gradient-start: #333333;
+            --gradient-end: #666666;
+            --profile-stroke: #ffffff;
+        }
+
+        :root[data-theme="light"] {
+            --primary: #000000;
+            --secondary: #505050;
+            --background: #ffffff;
+            --card-bg: rgba(245, 245, 245, 0.8);
+            --accent: #000000;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --border-radius: 0px;
+            --box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --background-rgb: 255, 255, 255;
+            --gradient-start: #e0e0e0;
+            --gradient-end: #bbbbbb;
+            --profile-stroke: #000000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            padding-top: 0;
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+            background-color: var(--background);
+            color: var(--primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background-color 0.3s ease;
+        }
+
+        main {
+            padding-top: 64px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 80px 24px 60px;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .hero-section h1 {
+            font-size: 2.5rem;
+            font-weight: 500;
+            margin-bottom: 16px;
+            color: var(--primary);
+            letter-spacing: -0.02em;
+            position: relative;
+        }
+
+        .hero-section h2 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--secondary);
+            letter-spacing: -0.01em;
+            position: relative;
+        }
+
+        .hero-text {
+            color: var(--secondary);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin: 24px auto 32px;
+            max-width: 600px;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 32px;
+            background: var(--primary);
+            color: var(--background);
+            border: 1px solid var(--primary);
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button:hover {
+            background: transparent;
+            color: var(--primary);
+        }
+
+        .cta-button .cta-arrow {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            fill: none;
+            transition: transform 0.3s ease;
+        }
+
+        .cta-button:hover .cta-arrow {
+            transform: translateX(4px);
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: rgba(var(--background-rgb), 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-size: 0.875rem;
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        .controls {
+            display: flex;
+            gap: 16px;
+        }
+
+        .control-button {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            transition: transform 0.3s ease;
+        }
+
+        .control-button:hover {
+            transform: scale(1.1);
+        }
+
+        .control-button svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            padding: 24px;
+            position: relative;
+            z-index: 1;
+            margin-top: 40px;
+        }
+
+        .profile-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            position: relative;
+            cursor: pointer;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--border-color);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.3s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.05);
+            border-color: var(--accent);
+        }
+
+        .profile-image:hover img {
+            transform: scale(1.1);
+        }
+
+        .profile-details {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-name {
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .profile-location, .profile-role {
+            font-size: 0.75rem;
+            color: var(--secondary);
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+
+        .profile-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .profile-button {
+            height: 36px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--primary);
+            font-family: inherit;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .profile-button:hover {
+            background: var(--primary);
+            color: var(--background);
+        }
+
+        .profile-button svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .social-button {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-button:hover {
+            background: var(--primary);
+            color: var(--background);
+        }
+
+        .social-button svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        .video-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .video-container {
+            position: relative;
+            width: 90%;
+            max-width: 800px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-button:hover {
+            background: var(--primary);
+            color: var(--background);
+        }
+
+        .close-button svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        @media (max-width: 1024px) {
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 120px 24px 40px;
+            }
+            
+            .grid-container {
+                margin-top: 20px;
+                padding: 20px;
+            }
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+            padding-top: 64px; /* Height of navbar */
+            min-height: 100vh;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 80px 24px 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .hero-section h1 {
+            font-size: 2.5rem;
+            font-weight: 500;
+            margin-bottom: 16px;
+            color: var(--primary);
+            letter-spacing: -0.02em;
+        }
+
+        .hero-section h2 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--secondary);
+            letter-spacing: -0.01em;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            padding: 0 24px;
+            position: relative;
+        }
+
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.3;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: rgba(var(--background-rgb), 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 60px 24px 40px;
+            }
+
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+
+            .hero-section h2 {
+                font-size: 1.25rem;
+            }
+
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .footer {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid var(--border-color);
+            padding: 60px 0 20px;
+            margin-top: 80px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+        }
+
+        .footer-section h3 {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+
+        .footer-section h4 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+
+        .footer-section p {
+            color: var(--secondary);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .social-link {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            color: var(--background);
+            border-color: var(--primary);
+        }
+
+        .social-link svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-form {
+            display: flex;
+            gap: 8px;
+        }
+
+        .footer-form input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--primary);
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+
+        .footer-form button {
+            padding: 8px 16px;
+            border: 1px solid var(--primary);
+            background: var(--primary);
+            color: var(--background);
+            font-family: inherit;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .footer-form button:hover {
+            background: transparent;
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 40px auto 0;
+            padding: 20px 24px 0;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--secondary);
+            font-size: 0.85rem;
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-legal a {
+            color: var(--secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-legal a:hover {
+            color: var(--primary);
+        }
+
+        @media (max-width: 1024px) {
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+        }
+
+        /* Update responsive styles */
+        @media (max-width: 480px) {
+            /* Hero section adjustments */
+            .hero-section {
+                padding: 60px 16px 40px;
+            }
+
+            .hero-section h1 {
+                font-size: 1.75rem;
+                line-height: 1.3;
+                margin-bottom: 12px;
+            }
+
+            .hero-section h2 {
+                font-size: 1.1rem;
+                line-height: 1.4;
+            }
+
+            .hero-text {
+                font-size: 0.95rem;
+                margin: 20px auto 24px;
+                padding: 0;
+            }
+
+            .cta-button {
+                padding: 12px 24px;
+                font-size: 0.9rem;
+                width: 100%;
+                max-width: 280px;
+                justify-content: center;
+            }
+
+            /* Grid adjustments */
+            .grid-container {
+                padding: 0 16px;
+                gap: 16px;
+            }
+
+            .profile-card {
+                padding: 20px;
+            }
+
+            .profile-image {
+                width: 100px;
+                height: 100px;
+                margin: 0 auto 16px;
+            }
+
+            .profile-name {
+                font-size: 1rem;
+            }
+
+            .profile-location, 
+            .profile-role {
+                font-size: 0.85rem;
+            }
+
+            /* Footer adjustments */
+            .footer {
+                padding: 40px 0 16px;
+                margin-top: 40px;
+            }
+
+            .footer-content {
+                padding: 0 16px;
+                gap: 32px;
+            }
+
+            .footer-section h3 {
+                font-size: 1.1rem;
+            }
+
+            .footer-section h4 {
+                font-size: 0.95rem;
+            }
+
+            .footer-section p {
+                font-size: 0.85rem;
+            }
+
+            .footer-links a {
+                font-size: 0.85rem;
+            }
+
+            .footer-form {
+                flex-direction: column;
+            }
+
+            .footer-form input,
+            .footer-form button {
+                width: 100%;
+                padding: 10px;
+            }
+
+            .footer-bottom {
+                margin-top: 32px;
+                padding: 16px;
+                font-size: 0.8rem;
+            }
+
+            .footer-legal {
+                gap: 16px;
+            }
+
+            /* Navbar adjustments */
+            .navbar {
+                padding: 0 16px;
+            }
+
+            .logo {
+                font-size: 0.8rem;
+            }
+
+            .control-button {
+                width: 36px;
+                height: 36px;
+            }
+
+            .control-button svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            /* Profile buttons adjustments */
+            .profile-buttons {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .profile-button {
+                width: 100%;
+                padding: 10px;
+                font-size: 0.85rem;
+            }
+
+            .social-links {
+                justify-content: center;
+                margin-top: 16px;
+            }
+
+            .social-button {
+                width: 32px;
+                height: 32px;
+            }
+
+            .social-button svg {
+                width: 14px;
+                height: 14px;
+            }
+        }
+
+        /* Add specific iPhone SE landscape mode adjustments */
+        @media (max-width: 667px) and (max-height: 375px) {
+            .hero-section {
+                padding: 40px 16px 20px;
+            }
+
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">ERA3</div>
+        <div class="controls">
+            <button id="musicToggle" class="control-button">
+                <svg class="play-icon" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+            </button>
+            <button id="themeToggle" class="control-button">
+                <svg class="sun-icon" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="4"/>
+                    <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                </svg>
+                <svg class="moon-icon" viewBox="0 0 24 24" style="display: none;">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <canvas id="particleCanvas"></canvas>
+
+    <div class="content-wrapper">
+        <div class="hero-section">
+            <h1>Introducing ERA3 Designers.</h1>
+            <h2>The Next-Gen of Design is Here.</h2>
+            <p class="hero-text">
+                Meet the visionaries shaping tomorrow's digital landscapes. Our designers blend art, technology, 
+                and human-centered thinking to create experiences that inspire and transform.
+            </p>
+            <button class="cta-button">
+                Join ERA3 Community
+                <svg viewBox="0 0 24 24" class="cta-arrow">
+                    <path d="M5 12h14m-6 6l6-6-6-6"/>
+                </svg>
+            </button>
+        </div>
+
+        <main class="grid-container" id="gridContainer">
+            <!-- Profile cards will be generated here -->
+        </main>
+    </div>
+
+    <div class="video-modal" id="videoModal">
+        <div class="video-container">
+            <button class="close-button" id="closeModal">
+                <svg viewBox="0 0 24 24" width="16" height="16">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
+            <div style="aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center;">
+                <svg viewBox="0 0 24 24" width="64" height="64">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <path d="M10 8l6 4-6 4V8z"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>ERA3 Design</h3>
+                <p>Shaping the future of design technology</p>
+                <div class="footer-social">
+                    <a href="#" class="social-link">
+                        <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                    </a>
+                    <a href="#" class="social-link">
+                        <svg viewBox="0 0 24 24"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+                    </a>
+                    <a href="#" class="social-link">
+                        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </a>
+                    <a href="#" class="social-link">
+                        <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">Design System</a></li>
+                    <li><a href="#">Templates</a></li>
+                    <li><a href="#">Tutorials</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Newsletter</h4>
+                <p>Stay updated with our latest design insights</p>
+                <form class="footer-form">
+                    <input type="email" placeholder="Enter your email">
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 ERA3 Design. All rights reserved.</p>
+            <div class="footer-legal">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+<script>
+    // DOM Elements
+const root = document.documentElement;
+const themeToggle = document.getElementById('themeToggle');
+const musicToggle = document.getElementById('musicToggle');
+const closeModalBtn = document.getElementById('closeModal');
+const videoModal = document.getElementById('videoModal');
+const gridContainer = document.getElementById('gridContainer');
+
+// Audio setup
+let audio = null;
+
+// Optimize profile generation and DOM manipulation
+const profiles = [
+    { name: "Arjun Mehta", location: "Mumbai, India", photo: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop" },
+    { name: "Priya Sharma", location: "Bangalore, India", photo: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop" },
+    { name: "Aditya Patel", location: "Ahmedabad, India", photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop" },
+    { name: "Zara Kapoor", location: "Delhi, India", photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop" },
+    { name: "Rohan Iyer", location: "Chennai, India", photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop" },
+    { name: "Ananya Reddy", location: "Hyderabad, India", photo: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&h=400&fit=crop" },
+    { name: "Vihaan Malhotra", location: "Pune, India", photo: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop" },
+    { name: "Tara Desai", location: "Kolkata, India", photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop" },
+    { name: "Krishna Kumar", location: "Jaipur, India", photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop" },
+    { name: "Mira Nair", location: "Kochi, India", photo: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop" },
+    { name: "Dev Singhania", location: "Chandigarh, India", photo: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop" },
+    { name: "Riya Verma", location: "Lucknow, India", photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop" },
+    { name: "Kabir Bhat", location: "Goa, India", photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop" },
+    { name: "Saanvi Gupta", location: "Indore, India", photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop" },
+    { name: "Ishaan Shah", location: "Mysore, India", photo: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop" }
+].map(p => ({ ...p, role: "Design Technologist" }));
+
+function generateProfiles(count) {
+    return profiles.slice(0, count);
+}
+
+function createProfileCard(profile) {
+    return `
+        <div class="profile-card">
+            <div class="profile-image" onclick="openModal()">
+                <img src="${profile.photo}" alt="${profile.name}" />
+            </div>
+            <div class="profile-details">
+                <h2 class="profile-name">${profile.name}</h2>
+                <p class="profile-location">${profile.location}</p>
+                <p class="profile-role">${profile.role}</p>
+            </div>
+            <div class="profile-buttons">
+                <button class="profile-button">
+                    <svg viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+                    <span>Resume</span>
+                </button>
+                <button class="profile-button">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12h8m-4-4v8"/></svg>
+                    <span>Portfolio</span>
+                </button>
+            </div>
+            <div class="social-links">
+                <button class="social-button">
+                    <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                </button>
+                <button class="social-button">
+                    <svg viewBox="0 0 24 24"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+// Optimize initialization
+function initializeGrid() {
+    gridContainer.innerHTML = generateProfiles(30).map(createProfileCard).join('');
+}
+
+// Audio functionality
+function initAudio() {
+    if (!audio) {
+        audio = new Audio('https://cdn.example.com/space-ambient.mp3'); // Replace with actual URL
+        audio.loop = true;
+        audio.volume = 0.4;
+    }
+}
+
+function updateMusicButton(isPlaying) {
+    musicToggle.innerHTML = isPlaying ? `
+        <svg viewBox="0 0 24 24">
+            <path d="M6 4h4v16H6zM14 4h4v16h-4z"/>
+        </svg>
+    ` : `
+        <svg viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+        </svg>
+    `;
+}
+
+function toggleMusic() {
+    if (!audio) initAudio();
+    
+    if (audio.paused) {
+        audio.play().then(() => {
+            updateMusicButton(true);
+        }).catch(error => {
+            console.error('Playback failed:', error);
+            musicToggle.style.opacity = '0.5';
+        });
+    } else {
+        audio.pause();
+        updateMusicButton(false);
+    }
+}
+
+// Modal functionality
+function openModal() {
+    videoModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    videoModal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// Theme functionality
+function toggleTheme() {
+    const currentTheme = root.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', newTheme);
+    localStorage.setItem('preferred-theme', newTheme);
+    
+    const sunIcon = themeToggle.querySelector('.sun-icon');
+    const moonIcon = themeToggle.querySelector('.moon-icon');
+    sunIcon.style.display = newTheme === 'dark' ? 'block' : 'none';
+    moonIcon.style.display = newTheme === 'dark' ? 'none' : 'block';
+
+    // Refresh the grid to update the profile images
+    initializeGrid();
+}
+
+// Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('preferred-theme') || 'dark';
+    root.setAttribute('data-theme', savedTheme);
+    
+    // Update theme toggle icons initial state
+    const sunIcon = themeToggle.querySelector('.sun-icon');
+    const moonIcon = themeToggle.querySelector('.moon-icon');
+    sunIcon.style.display = savedTheme === 'dark' ? 'block' : 'none';
+    moonIcon.style.display = savedTheme === 'dark' ? 'none' : 'block';
+    
+    initializeGrid();
+});
+
+themeToggle.addEventListener('click', toggleTheme);
+musicToggle.addEventListener('click', toggleMusic);
+closeModalBtn.addEventListener('click', closeModal);
+
+videoModal.addEventListener('click', (e) => {
+    if (e.target === videoModal) closeModal();
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && videoModal.classList.contains('active')) {
+        closeModal();
+    }
+});
+
+// Optimize particle rendering
+const PARTICLE_COUNT = 50;
+const particles = Array.from({ length: PARTICLE_COUNT }, () => new Particle());
+
+// Use requestAnimationFrame for better performance
+let animationId;
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(particle => {
+        particle.update();
+        particle.draw();
+    });
+    animationId = requestAnimationFrame(animate);
+}
+
+// Cleanup function
+function cleanup() {
+    cancelAnimationFrame(animationId);
+    if (audio) {
+        audio.pause();
+        audio = null;
+    }
+}
+
+// Event listeners
+window.addEventListener('beforeunload', cleanup);
+window.addEventListener('load', () => {
+    initializeGrid();
+    animate();
+});
+
+// Make openModal available globally for the onclick handlers
+window.openModal = openModal;
+</script>
+</body>
+</html>
