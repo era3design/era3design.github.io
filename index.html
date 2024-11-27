@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hire ERA3 Designers 🤹🏻</title>
+    <title>Profile Grid</title>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&display=swap');
@@ -828,11 +828,149 @@
                 grid-template-columns: repeat(2, 1fr);
             }
         }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            margin: 0 auto;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav-link {
+            color: var(--secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            padding: 8px 0;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .nav-link.primary {
+            color: var(--primary);
+            background: none;
+            border-radius: 0;
+        }
+
+        .nav-link.primary:hover {
+            background: none;
+            outline: none;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 32px;
+        }
+
+        .cta-button.secondary {
+            background: transparent;
+            color: var(--primary);
+        }
+
+        .cta-button.secondary:hover {
+            background: var(--primary);
+            color: var(--background);
+        }
+
+        .section-heading {
+            text-align: center;
+            margin: 60px auto 40px;
+            padding: 0 24px;
+        }
+
+        .section-heading h2 {
+            font-size: 2rem;
+            font-weight: 500;
+            color: var(--primary);
+            letter-spacing: -0.02em;
+        }
+
+        /* Mobile responsive updates */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+            }
+            
+            .cta-button {
+                width: 100%;
+                max-width: 280px;
+            }
+            
+            .section-heading h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Add mobile menu for nav links */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            padding: 16px;
+            backdrop-filter: blur(12px);
+            border-top: 1px solid var(--border-color);
+            z-index: 999;
+        }
+
+        .mobile-nav .nav-link {
+            display: block;
+            padding: 12px 16px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .navbar .controls {
+                margin-left: auto;
+            }
+            
+            .mobile-menu-button {
+                display: block;
+            }
+            
+            .mobile-nav.active {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="logo">ERA3</div>
+        <div class="nav-links">
+            <a href="#partner" class="nav-link">Become ERA3 Partner</a>
+            <a href="#designers" class="nav-link">Explore Our Designers</a>
+        </div>
         <div class="controls">
             <button id="musicToggle" class="control-button">
                 <svg class="play-icon" viewBox="0 0 24 24">
@@ -861,12 +999,24 @@
                 Meet the visionaries shaping tomorrow's digital landscapes. Our designers blend art, technology, 
                 and human-centered thinking to create experiences that inspire and transform.
             </p>
-            <button class="cta-button">
-                Join ERA3 Community
-                <svg viewBox="0 0 24 24" class="cta-arrow">
-                    <path d="M5 12h14m-6 6l6-6-6-6"/>
-                </svg>
-            </button>
+            <div class="hero-buttons">
+                <button class="cta-button primary">
+                    Become ERA3 Partner
+                    <svg viewBox="0 0 24 24" class="cta-arrow">
+                        <path d="M5 12h14m-6 6l6-6-6-6"/>
+                    </svg>
+                </button>
+                <button class="cta-button secondary">
+                    Explore Our Designers
+                    <svg viewBox="0 0 24 24" class="cta-arrow">
+                        <path d="M5 12h14m-6 6l6-6-6-6"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="section-heading">
+            <h2>Designers Ready For Hire</h2>
         </div>
 
         <main class="grid-container" id="gridContainer">
@@ -1148,6 +1298,15 @@ window.addEventListener('load', () => {
 
 // Make openModal available globally for the onclick handlers
 window.openModal = openModal;
+
+// Update any existing button click handlers
+document.querySelectorAll('.cta-button, .nav-link').forEach(button => {
+    button.addEventListener('click', (e) => {
+        const isPartner = e.target.textContent.includes('Partner');
+        const section = isPartner ? '#partner' : '#designers';
+        document.querySelector(section)?.scrollIntoView({ behavior: 'smooth' });
+    });
+});
 </script>
 </body>
 </html>
