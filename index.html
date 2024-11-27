@@ -962,14 +962,199 @@
                 display: block;
             }
         }
+
+        .era3-philosophy {
+            padding: 100px 24px;
+            background: var(--card-bg);
+            position: relative;
+            z-index: 2;
+            margin: 80px 0;
+        }
+
+        .philosophy-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .era3-philosophy h2 {
+            font-size: 2.5rem;
+            font-weight: 500;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .era3-philosophy h3 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--secondary);
+            text-align: center;
+            margin-bottom: 40px;
+            letter-spacing: -0.01em;
+        }
+
+        .philosophy-intro {
+            text-align: center;
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-bottom: 48px;
+        }
+
+        .philosophy-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .philosophy-card {
+            padding: 32px;
+            background: rgba(var(--background-rgb), 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .philosophy-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 24px;
+            color: var(--primary);
+        }
+
+        .card-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        .philosophy-card h4 {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+
+        .philosophy-card p {
+            color: var(--secondary);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 1024px) {
+            .philosophy-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .era3-philosophy {
+                padding: 60px 24px;
+                margin: 40px 0;
+            }
+
+            .era3-philosophy h2 {
+                font-size: 2rem;
+            }
+
+            .era3-philosophy h3 {
+                font-size: 1.25rem;
+                margin-bottom: 32px;
+            }
+
+            .philosophy-intro {
+                font-size: 1rem;
+                margin-bottom: 32px;
+            }
+
+            .philosophy-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .philosophy-card {
+                padding: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .era3-philosophy {
+                padding: 40px 16px;
+            }
+
+            .era3-philosophy h2 {
+                font-size: 1.75rem;
+            }
+
+            .card-icon {
+                width: 40px;
+                height: 40px;
+                margin-bottom: 20px;
+            }
+        }
+
+        .logo {
+            height: 16px;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .logo-image {
+            height: 100%;
+            width: auto;
+            object-fit: contain;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: opacity 0.3s ease;
+        }
+
+        .light-logo {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .dark-logo {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        [data-theme="dark"] .light-logo {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        [data-theme="dark"] .dark-logo {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                height: 13px;
+            }
+        }
     </style>
 </head>
 <body>
     <nav class="navbar">
-        <div class="logo">ERA3</div>
+        <div class="logo">
+            <img src="/Users/mukeshgupta/Downloads/Era3_Black.png" alt="ERA3" class="logo-image light-logo">
+            <img src="/Users/mukeshgupta/Downloads/Era3_White.png" alt="ERA3" class="logo-image dark-logo">
+        </div>
         <div class="nav-links">
-            <a href="#partner" class="nav-link">Become ERA3 Partner</a>
-            <a href="#designers" class="nav-link">Explore Our Designers</a>
+            <a href="#hire" class="nav-link">Hire Designers</a>
+            <a href="#designers" class="nav-link">Explore Designers</a>
         </div>
         <div class="controls">
             <button id="musicToggle" class="control-button">
@@ -995,25 +1180,54 @@
         <div class="hero-section">
             <h1>Introducing ERA3 Designers.</h1>
             <h2>The Next-Gen of Design is Here.</h2>
-            <p class="hero-text">
-                Meet the visionaries shaping tomorrow's digital landscapes. Our designers blend art, technology, 
-                and human-centered thinking to create experiences that inspire and transform.
-            </p>
             <div class="hero-buttons">
-                <button class="cta-button primary">
-                    Become ERA3 Partner
-                    <svg viewBox="0 0 24 24" class="cta-arrow">
-                        <path d="M5 12h14m-6 6l6-6-6-6"/>
-                    </svg>
-                </button>
-                <button class="cta-button secondary">
-                    Explore Our Designers
-                    <svg viewBox="0 0 24 24" class="cta-arrow">
-                        <path d="M5 12h14m-6 6l6-6-6-6"/>
-                    </svg>
-                </button>
+                <button class="cta-button primary">Hire Designers</button>
+                <button class="cta-button secondary">Explore Designers</button>
             </div>
         </div>
+
+        <section class="era3-philosophy">
+            <div class="philosophy-content">
+                <h2>Who Are ERA3 Designers?</h2>
+                <h3>"Designers with purpose. Innovators with vision."</h3>
+                
+                <p class="philosophy-intro">
+                    ERA3 Designers are trained with a unique philosophy grounded in:
+                </p>
+                
+                <div class="philosophy-grid">
+                    <div class="philosophy-card">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </div>
+                        <h4>Decoding Context</h4>
+                        <p>Understanding human, business, market, and environmental layers to identify untapped opportunities.</p>
+                    </div>
+                    
+                    <div class="philosophy-card">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                            </svg>
+                        </div>
+                        <h4>Crafting Meaningful Solutions</h4>
+                        <p>Using creativity, empathy, and cutting-edge technology to solve today's and tomorrow's challenges.</p>
+                    </div>
+                    
+                    <div class="philosophy-card">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <h4>Driving Impact</h4>
+                        <p>Delivering solutions that create measurable value for people, businesses, and the planet.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <div class="section-heading">
             <h2>Designers Ready For Hire</h2>
@@ -1043,7 +1257,10 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
-                <h3>ERA3 Design</h3>
+                <div class="logo">
+                    <img src="/Users/mukeshgupta/Downloads/Era3_Black.png" alt="ERA3" class="logo-image light-logo">
+                    <img src="/Users/mukeshgupta/Downloads/Era3_White.png" alt="ERA3" class="logo-image dark-logo">
+                </div><br>
                 <p>Shaping the future of design technology</p>
                 <div class="footer-social">
                     <a href="#" class="social-link">
@@ -1306,6 +1523,31 @@ document.querySelectorAll('.cta-button, .nav-link').forEach(button => {
         const section = isPartner ? '#partner' : '#designers';
         document.querySelector(section)?.scrollIntoView({ behavior: 'smooth' });
     });
+});
+
+// Theme toggle functionality
+document.addEventListener('DOMContentLoaded', () => {
+    const themeToggle = document.getElementById('themeToggle');
+    
+    // Function to toggle theme
+    function toggleTheme() {
+        const html = document.documentElement;
+        const currentTheme = html.getAttribute('data-theme');
+        
+        if (currentTheme === 'dark') {
+            html.removeAttribute('data-theme');
+        } else {
+            html.setAttribute('data-theme', 'dark');
+        }
+    }
+
+    // Add click event to theme toggle button
+    themeToggle.addEventListener('click', toggleTheme);
+
+    // Check system preference on load
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }
 });
 </script>
 </body>
